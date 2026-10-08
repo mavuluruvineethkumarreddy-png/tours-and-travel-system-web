@@ -1,0 +1,1985 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TravelSphere - Tourism Management System</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #f4f7fb;
+    color: #222;
+    transition: 0.3s;
+}
+
+body.dark {
+    background: #111827;
+    color: #f5f5f5;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* AUTH */
+
+.auth-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #2563eb, #06b6d4);
+}
+
+.auth-box {
+    width: 390px;
+    background: white;
+    padding: 35px;
+    border-radius: 20px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+}
+
+.auth-box h1 {
+    text-align: center;
+    color: #2563eb;
+    margin-bottom: 8px;
+}
+
+.auth-box p {
+    text-align: center;
+    color: #777;
+    margin-bottom: 25px;
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: bold;
+}
+
+.input-group input,
+.input-group select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    outline: none;
+}
+
+.password-box {
+    position: relative;
+}
+
+.password-box button {
+    position: absolute;
+    right: 8px;
+    top: 8px;
+    background: transparent;
+    font-size: 18px;
+}
+
+.primary-btn {
+    width: 100%;
+    padding: 13px;
+    background: #2563eb;
+    color: white;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.primary-btn:hover {
+    background: #1d4ed8;
+}
+
+.auth-switch {
+    text-align: center;
+    margin-top: 18px;
+    color: #2563eb;
+    cursor: pointer;
+}
+
+/* APP */
+
+.app {
+    min-height: 100vh;
+}
+
+.navbar {
+    height: 65px;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 25px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.dark .navbar {
+    background: #1f2937;
+}
+
+.logo {
+    font-size: 22px;
+    font-weight: bold;
+    color: #2563eb;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.icon-btn {
+    background: #eef2ff;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.logout-btn {
+    background: #ef4444;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 8px;
+}
+
+.layout {
+    display: flex;
+}
+
+.sidebar {
+    width: 230px;
+    min-height: calc(100vh - 65px);
+    background: #172554;
+    color: white;
+    padding: 20px 12px;
+    position: fixed;
+    left: 0;
+    top: 65px;
+}
+
+.sidebar button {
+    width: 100%;
+    padding: 13px;
+    margin-bottom: 6px;
+    background: transparent;
+    color: white;
+    text-align: left;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.sidebar button:hover,
+.sidebar button.active {
+    background: #2563eb;
+}
+
+.main {
+    margin-left: 230px;
+    padding: 25px;
+    width: calc(100% - 230px);
+}
+
+.page-title {
+    margin-bottom: 20px;
+}
+
+.page-title h2 {
+    font-size: 28px;
+}
+
+.page-title p {
+    color: #777;
+    margin-top: 5px;
+}
+
+/* DASHBOARD */
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin-bottom: 25px;
+}
+
+.stat-card {
+    background: white;
+    padding: 22px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+}
+
+.dark .stat-card,
+.dark .card,
+.dark .destination-card {
+    background: #1f2937;
+}
+
+.stat-card h3 {
+    font-size: 14px;
+    color: #777;
+}
+
+.stat-card strong {
+    display: block;
+    font-size: 30px;
+    margin-top: 8px;
+    color: #2563eb;
+}
+
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+}
+
+/* DESTINATIONS */
+
+.search-bar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.search-bar input,
+.search-bar select {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+.search-bar input {
+    flex: 1;
+}
+
+.destination-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.destination-card {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+
+.destination-image {
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 70px;
+    background: linear-gradient(135deg, #60a5fa, #22d3ee);
+}
+
+.destination-content {
+    padding: 18px;
+}
+
+.destination-content h3 {
+    margin-bottom: 7px;
+}
+
+.destination-content p {
+    color: #777;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.tag {
+    display: inline-block;
+    background: #dbeafe;
+    color: #2563eb;
+    padding: 5px 9px;
+    border-radius: 15px;
+    font-size: 12px;
+}
+
+.card-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 15px;
+}
+
+.small-btn {
+    padding: 9px 12px;
+    border-radius: 7px;
+    background: #2563eb;
+    color: white;
+}
+
+.favorite {
+    background: #fee2e2;
+    color: #ef4444;
+}
+
+/* TABLE */
+
+.table-container {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 13px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+}
+
+th {
+    background: #eff6ff;
+}
+
+/* MODAL */
+
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 500;
+}
+
+.modal-box {
+    background: white;
+    width: 500px;
+    max-width: 90%;
+    padding: 25px;
+    border-radius: 15px;
+}
+
+.dark .modal-box {
+    background: #1f2937;
+}
+
+.close {
+    float: right;
+    font-size: 22px;
+    background: transparent;
+}
+
+/* FORM */
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.form-grid input,
+.form-grid select,
+.form-grid textarea {
+    width: 100%;
+    padding: 11px;
+    border: 1px solid #ddd;
+    border-radius: 7px;
+}
+
+textarea {
+    resize: vertical;
+}
+
+/* NOTIFICATION */
+
+.notification {
+    padding: 15px;
+    border-left: 4px solid #2563eb;
+    background: #eff6ff;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+/* PROFILE */
+
+.profile {
+    display: flex;
+    gap: 25px;
+    align-items: center;
+}
+
+.avatar {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: #2563eb;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 35px;
+}
+
+/* MOBILE */
+
+@media(max-width: 900px) {
+
+    .sidebar {
+        width: 190px;
+    }
+
+    .main {
+        margin-left: 190px;
+        width: calc(100% - 190px);
+    }
+
+    .stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .destination-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media(max-width: 650px) {
+
+    .sidebar {
+        display: none;
+    }
+
+    .main {
+        margin-left: 0;
+        width: 100%;
+        padding: 15px;
+    }
+
+    .stats {
+        grid-template-columns: 1fr;
+    }
+
+    .destination-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .navbar {
+        padding: 0 12px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- AUTHENTICATION -->
+
+<div id="auth" class="auth-container">
+
+    <div class="auth-box">
+
+        <h1>🌍 TravelSphere</h1>
+        <p id="authSubtitle">Login to your travel dashboard</p>
+
+        <div id="loginForm">
+
+            <div class="input-group">
+                <label>Email</label>
+                <input id="loginEmail" type="email" placeholder="Enter email">
+            </div>
+
+            <div class="input-group">
+                <label>Password</label>
+
+                <div class="password-box">
+                    <input id="loginPassword" type="password" placeholder="Enter password">
+                    <button onclick="togglePassword('loginPassword')">👁️</button>
+                </div>
+            </div>
+
+            <button class="primary-btn" onclick="login()">Login</button>
+
+            <div class="auth-switch" onclick="showSignup()">
+                Don't have an account? Sign Up
+            </div>
+
+        </div>
+
+        <div id="signupForm" class="hidden">
+
+            <div class="input-group">
+                <label>Full Name</label>
+                <input id="signupName" type="text" placeholder="Enter name">
+            </div>
+
+            <div class="input-group">
+                <label>Email</label>
+                <input id="signupEmail" type="email" placeholder="Enter email">
+            </div>
+
+            <div class="input-group">
+                <label>Password</label>
+
+                <div class="password-box">
+                    <input id="signupPassword" type="password" placeholder="Create password">
+                    <button onclick="togglePassword('signupPassword')">👁️</button>
+                </div>
+            </div>
+
+            <button class="primary-btn" onclick="signup()">Create Account</button>
+
+            <div class="auth-switch" onclick="showLogin()">
+                Already have an account? Login
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- APPLICATION -->
+
+<div id="app" class="app hidden">
+
+    <nav class="navbar">
+
+        <div class="logo">
+            🌍 TravelSphere
+        </div>
+
+        <div class="nav-right">
+
+            <button class="icon-btn" onclick="toggleDarkMode()">
+                🌙
+            </button>
+
+            <button class="icon-btn" onclick="showPage('notifications')">
+                🔔
+            </button>
+
+            <span id="welcomeUser"></span>
+
+            <button class="logout-btn" onclick="logout()">
+                Logout
+            </button>
+
+        </div>
+
+    </nav>
+
+
+    <div class="layout">
+
+        <aside class="sidebar">
+
+            <button class="active" onclick="showPage('dashboard',this)">
+                📊 Dashboard
+            </button>
+
+            <button onclick="showPage('destinations',this)">
+                🗺️ Destinations
+            </button>
+
+            <button onclick="showPage('planner',this)">
+                🧳 Trip Planner
+            </button>
+
+            <button onclick="showPage('bookings',this)">
+                🎫 My Bookings
+            </button>
+
+            <button onclick="showPage('favorites',this)">
+                ❤️ Favorites
+            </button>
+
+            <button onclick="showPage('notifications',this)">
+                🔔 Notifications
+            </button>
+
+            <button onclick="showPage('profile',this)">
+                👤 Profile
+            </button>
+
+            <button onclick="showPage('admin',this)">
+                ⚙️ Admin Panel
+            </button>
+
+        </aside>
+
+
+        <main class="main">
+
+            <!-- DASHBOARD -->
+
+            <section id="dashboard" class="page">
+
+                <div class="page-title">
+                    <h2>Travel Dashboard</h2>
+                    <p>Welcome to your personalized travel management system.</p>
+                </div>
+
+                <div class="stats">
+
+                    <div class="stat-card">
+                        <h3>Available Destinations</h3>
+                        <strong id="destinationCount">0</strong>
+                    </div>
+
+                    <div class="stat-card">
+                        <h3>My Bookings</h3>
+                        <strong id="bookingCount">0</strong>
+                    </div>
+
+                    <div class="stat-card">
+                        <h3>Favorites</h3>
+                        <strong id="favoriteCount">0</strong>
+                    </div>
+
+                    <div class="stat-card">
+                        <h3>Notifications</h3>
+                        <strong id="notificationCount">0</strong>
+                    </div>
+
+                </div>
+
+
+                <div class="card">
+
+                    <h3>✈️ Recommended for You</h3>
+
+                    <br>
+
+                    <div class="destination-grid" id="recommended"></div>
+
+                </div>
+
+
+                <div class="card">
+
+                    <h3>🔥 Latest Travel Ideas</h3>
+
+                    <br>
+
+                    <p>• AI-based destination recommendations</p>
+                    <br>
+                    <p>• Digital travel itinerary</p>
+                    <br>
+                    <p>• Smart budget tracking</p>
+                    <br>
+                    <p>• Online booking management</p>
+                    <br>
+                    <p>• Traveler reviews and ratings</p>
+                    <br>
+                    <p>• Personalized travel preferences</p>
+
+                </div>
+
+            </section>
+
+
+            <!-- DESTINATIONS -->
+
+            <section id="destinations" class="page hidden">
+
+                <div class="page-title">
+                    <h2>Explore Destinations</h2>
+                    <p>Find your next adventure.</p>
+                </div>
+
+                <div class="search-bar">
+
+                    <input
+                        id="searchDestination"
+                        placeholder="Search destination..."
+                        oninput="renderDestinations()"
+                    >
+
+                    <select id="categoryFilter" onchange="renderDestinations()">
+                        <option value="All">All Categories</option>
+                        <option value="Beach">Beach</option>
+                        <option value="Mountain">Mountain</option>
+                        <option value="City">City</option>
+                        <option value="Historical">Historical</option>
+                        <option value="Adventure">Adventure</option>
+                    </select>
+
+                </div>
+
+                <div id="destinationGrid" class="destination-grid"></div>
+
+            </section>
+
+
+            <!-- PLANNER -->
+
+            <section id="planner" class="page hidden">
+
+                <div class="page-title">
+                    <h2>🧳 Trip Planner</h2>
+                    <p>Create your personalized travel itinerary.</p>
+                </div>
+
+                <div class="card">
+
+                    <div class="form-grid">
+
+                        <div>
+                            <label>Destination</label>
+                            <select id="tripDestination"></select>
+                        </div>
+
+                        <div>
+                            <label>Travel Date</label>
+                            <input type="date" id="tripDate">
+                        </div>
+
+                        <div>
+                            <label>Number of Travelers</label>
+                            <input type="number" id="travelers" value="1" min="1">
+                        </div>
+
+                        <div>
+                            <label>Budget (₹)</label>
+                            <input type="number" id="tripBudget" placeholder="50000">
+                        </div>
+
+                    </div>
+
+                    <br>
+
+                    <button class="small-btn" onclick="createTrip()">
+                        Create Trip
+                    </button>
+
+                </div>
+
+                <div class="card">
+
+                    <h3>My Travel Plans</h3>
+
+                    <br>
+
+                    <div id="tripList"></div>
+
+                </div>
+
+            </section>
+
+
+            <!-- BOOKINGS -->
+
+            <section id="bookings" class="page hidden">
+
+                <div class="page-title">
+                    <h2>🎫 My Bookings</h2>
+                    <p>Manage your travel reservations.</p>
+                </div>
+
+                <div class="card">
+
+                    <div class="table-container">
+
+                        <table>
+
+                            <thead>
+                                <tr>
+                                    <th>Destination</th>
+                                    <th>Date</th>
+                                    <th>Travelers</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="bookingTable"></tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- FAVORITES -->
+
+            <section id="favorites" class="page hidden">
+
+                <div class="page-title">
+                    <h2>❤️ Favorite Destinations</h2>
+                    <p>Your saved destinations.</p>
+                </div>
+
+                <div id="favoriteGrid" class="destination-grid"></div>
+
+            </section>
+
+
+            <!-- NOTIFICATIONS -->
+
+            <section id="notifications" class="page hidden">
+
+                <div class="page-title">
+                    <h2>🔔 Notifications</h2>
+                    <p>Latest travel updates.</p>
+                </div>
+
+                <div class="card">
+
+                    <div class="notification">
+                        ✈️ New destinations have been added.
+                    </div>
+
+                    <div class="notification">
+                        🎉 Special travel discounts are available.
+                    </div>
+
+                    <div class="notification">
+                        🌍 Explore our recommended destinations.
+                    </div>
+
+                    <div class="notification">
+                        🔐 Your account security settings can be updated.
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- PROFILE -->
+
+            <section id="profile" class="page hidden">
+
+                <div class="page-title">
+                    <h2>👤 My Profile</h2>
+                </div>
+
+                <div class="card">
+
+                    <div class="profile">
+
+                        <div class="avatar" id="profileAvatar">
+                            U
+                        </div>
+
+                        <div>
+
+                            <h2 id="profileName"></h2>
+
+                            <p id="profileEmail"></p>
+
+                            <br>
+
+                            <span class="tag">
+                                Traveler
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="card">
+
+                    <h3>Change Password</h3>
+
+                    <br>
+
+                    <input
+                        id="newPassword"
+                        type="password"
+                        placeholder="New password"
+                        style="padding:11px;width:100%;max-width:400px;border:1px solid #ddd;border-radius:7px;"
+                    >
+
+                    <br><br>
+
+                    <button class="small-btn" onclick="changePassword()">
+                        Update Password
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- ADMIN -->
+
+            <section id="admin" class="page hidden">
+
+                <div class="page-title">
+                    <h2>⚙️ Admin Dashboard</h2>
+                    <p>Manage the tourism platform.</p>
+                </div>
+
+                <div class="stats">
+
+                    <div class="stat-card">
+                        <h3>Total Users</h3>
+                        <strong id="adminUsers">0</strong>
+                    </div>
+
+                    <div class="stat-card">
+                        <h3>Total Bookings</h3>
+                        <strong id="adminBookings">0</strong>
+                    </div>
+
+                    <div class="stat-card">
+                        <h3>Total Trips</h3>
+                        <strong id="adminTrips">0</strong>
+                    </div>
+
+                    <div class="stat-card">
+                        <h3>System Status</h3>
+                        <strong>Online</strong>
+                    </div>
+
+                </div>
+
+
+                <div class="card">
+
+                    <h3>Recent Activity</h3>
+
+                    <br>
+
+                    <div id="activityLog"></div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+</div>
+
+
+<!-- DESTINATION MODAL -->
+
+<div id="destinationModal" class="modal hidden">
+
+    <div class="modal-box">
+
+        <button class="close" onclick="closeModal()">✕</button>
+
+        <h2 id="modalTitle"></h2>
+
+        <br>
+
+        <p id="modalDescription"></p>
+
+        <br>
+
+        <p id="modalCategory"></p>
+
+        <p id="modalPrice"></p>
+
+        <p id="modalRating"></p>
+
+        <br>
+
+        <button class="small-btn" onclick="bookDestination()">
+            Book This Destination
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================
+   DATA
+========================= */
+
+const destinations = [
+
+    {
+        id: 1,
+        name: "Goa",
+        category: "Beach",
+        emoji: "🏖️",
+        description: "Beautiful beaches, nightlife and water sports.",
+        price: 15000,
+        rating: 4.8
+    },
+
+    {
+        id: 2,
+        name: "Manali",
+        category: "Mountain",
+        emoji: "🏔️",
+        description: "Snow-covered mountains and adventure activities.",
+        price: 18000,
+        rating: 4.7
+    },
+
+    {
+        id: 3,
+        name: "Hyderabad",
+        category: "City",
+        emoji: "🏙️",
+        description: "Modern city with rich food and cultural experiences.",
+        price: 12000,
+        rating: 4.5
+    },
+
+    {
+        id: 4,
+        name: "Jaipur",
+        category: "Historical",
+        emoji: "🏰",
+        description: "Explore forts, palaces and Rajasthan culture.",
+        price: 14000,
+        rating: 4.6
+    },
+
+    {
+        id: 5,
+        name: "Ladakh",
+        category: "Adventure",
+        emoji: "🏍️",
+        description: "High-altitude roads, mountains and unforgettable adventures.",
+        price: 25000,
+        rating: 4.9
+    },
+
+    {
+        id: 6,
+        name: "Kerala",
+        category: "Beach",
+        emoji: "🌴",
+        description: "Backwaters, beaches, forests and traditional culture.",
+        price: 16000,
+        rating: 4.8
+    },
+
+    {
+        id: 7,
+        name: "Delhi",
+        category: "City",
+        emoji: "🏛️",
+        description: "Historical monuments and modern urban experiences.",
+        price: 11000,
+        rating: 4.4
+    },
+
+    {
+        id: 8,
+        name: "Shimla",
+        category: "Mountain",
+        emoji: "❄️",
+        description: "Peaceful mountain destination with beautiful views.",
+        price: 17000,
+        rating: 4.7
+    }
+
+];
+
+
+/* =========================
+   STORAGE
+========================= */
+
+let users = JSON.parse(localStorage.getItem("travelUsers")) || [
+
+    {
+        name: "Admin",
+        email: "admin@travelsphere.com",
+        password: "admin123"
+    }
+
+];
+
+let bookings =
+    JSON.parse(localStorage.getItem("travelBookings")) || [];
+
+let trips =
+    JSON.parse(localStorage.getItem("travelTrips")) || [];
+
+let favorites =
+    JSON.parse(localStorage.getItem("travelFavorites")) || [];
+
+let logs =
+    JSON.parse(localStorage.getItem("travelLogs")) || [];
+
+let currentUser =
+    JSON.parse(localStorage.getItem("travelCurrentUser")) || null;
+
+let selectedDestination = null;
+
+
+/* =========================
+   AUTH
+========================= */
+
+function showSignup() {
+
+    document.getElementById("loginForm").classList.add("hidden");
+
+    document.getElementById("signupForm").classList.remove("hidden");
+
+    document.getElementById("authSubtitle").innerText =
+        "Create your TravelSphere account";
+
+}
+
+
+function showLogin() {
+
+    document.getElementById("signupForm").classList.add("hidden");
+
+    document.getElementById("loginForm").classList.remove("hidden");
+
+    document.getElementById("authSubtitle").innerText =
+        "Login to your travel dashboard";
+
+}
+
+
+function togglePassword(id) {
+
+    const input = document.getElementById(id);
+
+    input.type =
+        input.type === "password"
+        ? "text"
+        : "password";
+
+}
+
+
+function signup() {
+
+    const name =
+        document.getElementById("signupName").value.trim();
+
+    const email =
+        document.getElementById("signupEmail").value.trim();
+
+    const password =
+        document.getElementById("signupPassword").value;
+
+    if (!name || !email || !password) {
+
+        alert("Please fill all fields.");
+
+        return;
+
+    }
+
+    if (users.some(u => u.email === email)) {
+
+        alert("Account already exists.");
+
+        return;
+
+    }
+
+    users.push({
+        name,
+        email,
+        password
+    });
+
+    save();
+
+    alert("Account created successfully!");
+
+    showLogin();
+
+}
+
+
+function login() {
+
+    const email =
+        document.getElementById("loginEmail").value.trim();
+
+    const password =
+        document.getElementById("loginPassword").value;
+
+    const user =
+        users.find(
+            u => u.email === email &&
+                 u.password === password
+        );
+
+    if (!user) {
+
+        alert("Invalid email or password.");
+
+        return;
+
+    }
+
+    currentUser = user;
+
+    localStorage.setItem(
+        "travelCurrentUser",
+        JSON.stringify(currentUser)
+    );
+
+    addLog("User logged in");
+
+    startApp();
+
+}
+
+
+function logout() {
+
+    addLog("User logged out");
+
+    localStorage.removeItem("travelCurrentUser");
+
+    currentUser = null;
+
+    document.getElementById("app").classList.add("hidden");
+
+    document.getElementById("auth").classList.remove("hidden");
+
+}
+
+
+/* =========================
+   APP
+========================= */
+
+function startApp() {
+
+    document.getElementById("auth").classList.add("hidden");
+
+    document.getElementById("app").classList.remove("hidden");
+
+    document.getElementById("welcomeUser").innerText =
+        "Hi, " + currentUser.name;
+
+    updateDashboard();
+
+    renderDestinations();
+
+    renderBookings();
+
+    renderFavorites();
+
+    renderTrips();
+
+    renderProfile();
+
+    renderAdmin();
+
+}
+
+
+function showPage(page, button) {
+
+    document.querySelectorAll(".page")
+        .forEach(p => p.classList.add("hidden"));
+
+    document.getElementById(page)
+        .classList.remove("hidden");
+
+    document.querySelectorAll(".sidebar button")
+        .forEach(b => b.classList.remove("active"));
+
+    if (button) {
+
+        button.classList.add("active");
+
+    }
+
+}
+
+
+/* =========================
+   DASHBOARD
+========================= */
+
+function updateDashboard() {
+
+    document.getElementById("destinationCount")
+        .innerText = destinations.length;
+
+    document.getElementById("bookingCount")
+        .innerText =
+        bookings.filter(
+            b => b.email === currentUser.email
+        ).length;
+
+    document.getElementById("favoriteCount")
+        .innerText =
+        favorites.length;
+
+    document.getElementById("notificationCount")
+        .innerText = 4;
+
+    renderRecommended();
+
+}
+
+
+function renderRecommended() {
+
+    const box =
+        document.getElementById("recommended");
+
+    box.innerHTML =
+        destinations.slice(0,3)
+        .map(d => destinationHTML(d))
+        .join("");
+
+}
+
+
+/* =========================
+   DESTINATIONS
+========================= */
+
+function destinationHTML(d) {
+
+    const isFav =
+        favorites.includes(d.id);
+
+    return `
+
+        <div class="destination-card">
+
+            <div class="destination-image">
+                ${d.emoji}
+            </div>
+
+            <div class="destination-content">
+
+                <h3>${d.name}</h3>
+
+                <span class="tag">
+                    ${d.category}
+                </span>
+
+                <p>
+                    ${d.description}
+                </p>
+
+                <strong>
+                    ₹${d.price.toLocaleString()}
+                </strong>
+
+                <p>
+                    ⭐ ${d.rating}
+                </p>
+
+                <div class="card-actions">
+
+                    <button
+                        class="small-btn"
+                        onclick="viewDestination(${d.id})">
+                        View
+                    </button>
+
+                    <button
+                        class="small-btn favorite"
+                        onclick="toggleFavorite(${d.id})">
+                        ${isFav ? "❤️" : "♡"}
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+    `;
+
+}
+
+
+function renderDestinations() {
+
+    const search =
+        document.getElementById("searchDestination")?.value
+        .toLowerCase() || "";
+
+    const category =
+        document.getElementById("categoryFilter")?.value
+        || "All";
+
+    const filtered =
+        destinations.filter(d =>
+
+            d.name.toLowerCase().includes(search) &&
+
+            (category === "All" ||
+             d.category === category)
+
+        );
+
+    document.getElementById("destinationGrid")
+        .innerHTML =
+        filtered.map(d => destinationHTML(d)).join("");
+
+    const select =
+        document.getElementById("tripDestination");
+
+    if (select) {
+
+        select.innerHTML =
+            destinations
+            .map(d =>
+                `<option value="${d.id}">
+                    ${d.name}
+                </option>`
+            )
+            .join("");
+
+    }
+
+}
+
+
+function viewDestination(id) {
+
+    const d =
+        destinations.find(x => x.id === id);
+
+    selectedDestination = d;
+
+    document.getElementById("modalTitle")
+        .innerText =
+        d.emoji + " " + d.name;
+
+    document.getElementById("modalDescription")
+        .innerText =
+        d.description;
+
+    document.getElementById("modalCategory")
+        .innerText =
+        "Category: " + d.category;
+
+    document.getElementById("modalPrice")
+        .innerText =
+        "Estimated Package: ₹" +
+        d.price.toLocaleString();
+
+    document.getElementById("modalRating")
+        .innerText =
+        "Rating: ⭐ " + d.rating;
+
+    document.getElementById("destinationModal")
+        .classList.remove("hidden");
+
+}
+
+
+function closeModal() {
+
+    document.getElementById("destinationModal")
+        .classList.add("hidden");
+
+}
+
+
+function bookDestination() {
+
+    if (!selectedDestination) return;
+
+    const booking = {
+
+        id: Date.now(),
+
+        email: currentUser.email,
+
+        destination: selectedDestination.name,
+
+        date: new Date()
+            .toISOString()
+            .split("T")[0],
+
+        travelers: 1,
+
+        status: "Confirmed"
+
+    };
+
+    bookings.push(booking);
+
+    addLog(
+        "Booked " +
+        selectedDestination.name
+    );
+
+    save();
+
+    closeModal();
+
+    updateDashboard();
+
+    renderBookings();
+
+    alert("Destination booked successfully!");
+
+}
+
+
+/* =========================
+   FAVORITES
+========================= */
+
+function toggleFavorite(id) {
+
+    if (favorites.includes(id)) {
+
+        favorites =
+            favorites.filter(x => x !== id);
+
+    } else {
+
+        favorites.push(id);
+
+    }
+
+    save();
+
+    renderDestinations();
+
+    renderFavorites();
+
+    updateDashboard();
+
+}
+
+
+function renderFavorites() {
+
+    const box =
+        document.getElementById("favoriteGrid");
+
+    const favs =
+        destinations.filter(
+            d => favorites.includes(d.id)
+        );
+
+    if (favs.length === 0) {
+
+        box.innerHTML =
+            "<p>No favorite destinations yet.</p>";
+
+        return;
+
+    }
+
+    box.innerHTML =
+        favs.map(d => destinationHTML(d)).join("");
+
+}
+
+
+/* =========================
+   TRIP PLANNER
+========================= */
+
+function createTrip() {
+
+    const destinationId =
+        Number(
+            document.getElementById("tripDestination").value
+        );
+
+    const date =
+        document.getElementById("tripDate").value;
+
+    const travelers =
+        document.getElementById("travelers").value;
+
+    const budget =
+        document.getElementById("tripBudget").value;
+
+    if (!date || !budget) {
+
+        alert("Please complete the trip details.");
+
+        return;
+
+    }
+
+    const destination =
+        destinations.find(
+            d => d.id === destinationId
+        );
+
+    trips.push({
+
+        id: Date.now(),
+
+        email: currentUser.email,
+
+        destination: destination.name,
+
+        date,
+
+        travelers,
+
+        budget
+
+    });
+
+    addLog(
+        "Created trip to " +
+        destination.name
+    );
+
+    save();
+
+    renderTrips();
+
+    renderAdmin();
+
+    alert("Trip created successfully!");
+
+}
+
+
+function renderTrips() {
+
+    const box =
+        document.getElementById("tripList");
+
+    const userTrips =
+        trips.filter(
+            t => t.email === currentUser.email
+        );
+
+    if (userTrips.length === 0) {
+
+        box.innerHTML =
+            "<p>No trips planned yet.</p>";
+
+        return;
+
+    }
+
+    box.innerHTML =
+        userTrips.map(t => `
+
+            <div class="notification">
+
+                <strong>
+                    🧳 ${t.destination}
+                </strong>
+
+                <br>
+
+                Date: ${t.date}
+
+                <br>
+
+                Travelers: ${t.travelers}
+
+                <br>
+
+                Budget: ₹${Number(t.budget).toLocaleString()}
+
+            </div>
+
+        `).join("");
+
+}
+
+
+/* =========================
+   BOOKINGS
+========================= */
+
+function renderBookings() {
+
+    const table =
+        document.getElementById("bookingTable");
+
+    const userBookings =
+        bookings.filter(
+            b => b.email === currentUser.email
+        );
+
+    if (userBookings.length === 0) {
+
+        table.innerHTML =
+            `<tr>
+                <td colspan="5">
+                    No bookings found.
+                </td>
+             </tr>`;
+
+        return;
+
+    }
+
+    table.innerHTML =
+        userBookings.map(b => `
+
+            <tr>
+
+                <td>${b.destination}</td>
+
+                <td>${b.date}</td>
+
+                <td>${b.travelers}</td>
+
+                <td>
+                    <span class="tag">
+                        ${b.status}
+                    </span>
+                </td>
+
+                <td>
+
+                    <button
+                        class="small-btn"
+                        onclick="cancelBooking(${b.id})">
+                        Cancel
+                    </button>
+
+                </td>
+
+            </tr>
+
+        `).join("");
+
+}
+
+
+function cancelBooking(id) {
+
+    bookings =
+        bookings.filter(
+            b => b.id !== id
+        );
+
+    addLog("Cancelled a booking");
+
+    save();
+
+    renderBookings();
+
+    updateDashboard();
+
+}
+
+
+/* =========================
+   PROFILE
+========================= */
+
+function renderProfile() {
+
+    document.getElementById("profileName")
+        .innerText =
+        currentUser.name;
+
+    document.getElementById("profileEmail")
+        .innerText =
+        currentUser.email;
+
+    document.getElementById("profileAvatar")
+        .innerText =
+        currentUser.name
+        .charAt(0)
+        .toUpperCase();
+
+}
+
+
+function changePassword() {
+
+    const password =
+        document.getElementById("newPassword").value;
+
+    if (password.length < 6) {
+
+        alert("Password must contain at least 6 characters.");
+
+        return;
+
+    }
+
+    const user =
+        users.find(
+            u => u.email === currentUser.email
+        );
+
+    user.password = password;
+
+    currentUser.password = password;
+
+    save();
+
+    localStorage.setItem(
+        "travelCurrentUser",
+        JSON.stringify(currentUser)
+    );
+
+    alert("Password updated successfully.");
+
+}
+
+
+/* =========================
+   ADMIN
+========================= */
+
+function renderAdmin() {
+
+    document.getElementById("adminUsers")
+        .innerText =
+        users.length;
+
+    document.getElementById("adminBookings")
+        .innerText =
+        bookings.length;
+
+    document.getElementById("adminTrips")
+        .innerText =
+        trips.length;
+
+    document.getElementById("activityLog")
+        .innerHTML =
+        logs.slice(-10)
+        .reverse()
+        .map(l => `
+
+            <div class="notification">
+
+                ${l.message}
+
+                <br>
+
+                <small>
+                    ${l.time}
+                </small>
+
+            </div>
+
+        `).join("");
+
+}
+
+
+function addLog(message) {
+
+    logs.push({
+
+        message,
+
+        time:
+            new Date().toLocaleString()
+
+    });
+
+    save();
+
+}
+
+
+/* =========================
+   DARK MODE
+========================= */
+
+function toggleDarkMode() {
+
+    document.body.classList.toggle("dark");
+
+    localStorage.setItem(
+        "travelDark",
+        document.body.classList.contains("dark")
+    );
+
+}
+
+
+/* =========================
+   STORAGE
+========================= */
+
+function save() {
+
+    localStorage.setItem(
+        "travelUsers",
+        JSON.stringify(users)
+    );
+
+    localStorage.setItem(
+        "travelBookings",
+        JSON.stringify(bookings)
+    );
+
+    localStorage.setItem(
+        "travelTrips",
+        JSON.stringify(trips)
+    );
+
+    localStorage.setItem(
+        "travelFavorites",
+        JSON.stringify(favorites)
+    );
+
+    localStorage.setItem(
+        "travelLogs",
+        JSON.stringify(logs)
+    );
+
+}
+
+
+/* =========================
+   STARTUP
+========================= */
+
+if (
+    localStorage.getItem("travelDark")
+    === "true"
+) {
+
+    document.body.classList.add("dark");
+
+}
+
+
+if (currentUser) {
+
+    startApp();
+
+}
+
+</script>
+
+</body>
+</html>
